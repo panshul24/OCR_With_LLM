@@ -1,0 +1,6 @@
+.venv
+pycache_/
+.pyc
+.DS_Store
+data/inbox/
+data/outbox/
