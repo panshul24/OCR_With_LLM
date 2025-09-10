@@ -8,8 +8,8 @@ services:
       - OLLAMA_BASE=http://ollama:11434
       - INBOX_DIR=/data/inbox
       - OUTBOX_DIR=/data/outbox
-      - OPENROUTER_API_KEY=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
-      - OPENROUTER_VISION_MODEL=${OPENROUTER_VISION_MODEL:-qwen2.5-vl-7b-instruct}
+      # OPENROUTER_API_KEY should be set via host env if you enable vision
+      # OPENROUTER_VISION_MODEL=${OPENROUTER_VISION_MODEL:-qwen2.5-vl-7b-instruct}
     volumes:
       - ./:/app
       - ./data/inbox:/data/inbox
@@ -43,8 +43,8 @@ services:
       - OLLAMA_BASE=http://ollama:11434
       - INBOX_DIR=/data/inbox
       - OUTBOX_DIR=/data/outbox
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
-      - OPENROUTER_VISION_MODEL=${OPENROUTER_VISION_MODEL:-qwen2.5-vl-7b-instruct}
+      # OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      # OPENROUTER_VISION_MODEL=${OPENROUTER_VISION_MODEL:-qwen2.5-vl-7b-instruct}
     volumes:
       - ./:/app
       - ./data/inbox:/data/inbox
