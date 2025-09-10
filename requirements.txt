@@ -3,7 +3,9 @@ uvicorn[standard]==0.30.6
 pydantic==2.9.1
 pillow==10.4.0
 pytesseract==0.3.13
-PyMuPDF==1.24.9
+PyMuPDF==1.24.10
 python-multipart==0.0.9
 requests==2.32.3
+opencv-python-headless==4.10.0.84
 rapidfuzz==3.9.7
+pymupdf4llm==0.0.17

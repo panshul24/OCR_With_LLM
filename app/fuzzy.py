@@ -1,3 +1,8 @@
+"""Keyword scoring utilities using RapidFuzz.
+
+Config is loaded from data/config/keywords.json when present.
+Scores are telemetry only; not used for routing or decisions.
+"""
 from __future__ import annotations
 
 import json

@@ -1,3 +1,8 @@
+"""Drop-folder watcher service.
+
+Monitors data/inbox for new files and writes results to data/outbox.
+Uses the same OCR → LLM flow as the API route.
+"""
 from __future__ import annotations
 
 import os
@@ -6,8 +11,8 @@ import json
 from pathlib import Path
 from typing import Optional
 
-from app.ocr import extract_text_from_bytes
-from app.llm import segment_and_categorize
+from app.ocr import extract_text_from_bytes, bytes_to_images
+from app.llm import segment_and_categorize, hybrid_extract_and_categorize
 from app.fuzzy import load_keywords, compute_keyword_scores
 
 INBOX = Path(os.getenv("INBOX_DIR", "/data/inbox"))
@@ -24,6 +29,11 @@ def process_file(file_path: Path) -> Optional[Path]:
 		data = file_path.read_bytes()
 		text, meta = extract_text_from_bytes(data, filename=file_path.name)
 		segments = segment_and_categorize(text)
+		images = []
+		try:
+			images = bytes_to_images(data, filename=file_path.name)
+		except Exception:
+			images = []
 		keywords = load_keywords(KEYWORDS_FILE)
 		OUTBOX.mkdir(parents=True, exist_ok=True)
 		if isinstance(segments, list):
@@ -51,7 +61,7 @@ def process_file(file_path: Path) -> Optional[Path]:
 				"filename": file_path.name,
 				"ocr_meta": meta,
 				"text": text,
-				"categories": segments,
+				"categories": hybrid_extract_and_categorize(text, images),
 				"fuzzy_scores": compute_keyword_scores(text, keywords),
 			}
 			out_path.write_text(json.dumps(out_payload, ensure_ascii=False, indent=2))
